@@ -13,19 +13,35 @@
 
 /**
  * @export
- * @interface PostBankApplicationIdpModel
+ * @interface PostCustomerTokenIdpModel
  */
-export interface PostBankApplicationIdpModel {
+export interface PostCustomerTokenIdpModel {
     /**
-     * Name for the bank application.
+     * Customer guid the access token is being generated for.
      * @type {string}
-     * @memberof PostBankApplicationIdpModel
+     * @memberof PostCustomerTokenIdpModel
      */
-    name: string;
+    customer_guid: string;
     /**
-     * Bank guid the application is associated to.
-     * @type {string}
-     * @memberof PostBankApplicationIdpModel
+     * List of the scopes requested for the access token.
+     * @type {Set<string>}
+     * @memberof PostCustomerTokenIdpModel
      */
-    bank_guid?: string;
+    scopes: Set<PostCustomerTokenIdpModelScopesEnum>;
 }
+
+/**
+ * @export
+ * @enum {string}
+ */
+export enum PostCustomerTokenIdpModelScopesEnum {
+    Customersread = 'customers:read',
+    Accountsread = 'accounts:read',
+    Accountsexecute = 'accounts:execute',
+    Pricesread = 'prices:read',
+    Quotesread = 'quotes:read',
+    Quotesexecute = 'quotes:execute',
+    Tradesread = 'trades:read',
+    Rewardsread = 'rewards:read'
+}
+

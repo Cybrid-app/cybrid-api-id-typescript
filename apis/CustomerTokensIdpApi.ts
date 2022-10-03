@@ -11,21 +11,51 @@
  * Do not edit the class manually.
  */
 
+import type { Observable } from 'rxjs';
+import type { AjaxResponse } from 'rxjs/ajax';
+import { BaseAPI, throwIfNullOrUndefined } from '../runtime';
+import type { OperationOpts, HttpHeaders } from '../runtime';
+import type {
+    CustomerTokenIdpModel,
+    PostCustomerTokenIdpModel,
+} from '../models';
+
+export interface CreateCustomerTokenRequest {
+    postCustomerTokenIdpModel: PostCustomerTokenIdpModel;
+}
+
 /**
- * @export
- * @interface PostBankApplicationIdpModel
+ * no description
  */
-export interface PostBankApplicationIdpModel {
+export class CustomerTokensIdpApi extends BaseAPI {
+
     /**
-     * Name for the bank application.
-     * @type {string}
-     * @memberof PostBankApplicationIdpModel
+     * Creates a customer JWT access token.  Required scope: **customers:write**
+     * Create customer access token
      */
-    name: string;
-    /**
-     * Bank guid the application is associated to.
-     * @type {string}
-     * @memberof PostBankApplicationIdpModel
-     */
-    bank_guid?: string;
+    createCustomerToken({ postCustomerTokenIdpModel }: CreateCustomerTokenRequest): Observable<CustomerTokenIdpModel>
+    createCustomerToken({ postCustomerTokenIdpModel }: CreateCustomerTokenRequest, opts?: OperationOpts): Observable<AjaxResponse<CustomerTokenIdpModel>>
+    createCustomerToken({ postCustomerTokenIdpModel }: CreateCustomerTokenRequest, opts?: OperationOpts): Observable<CustomerTokenIdpModel | AjaxResponse<CustomerTokenIdpModel>> {
+        throwIfNullOrUndefined(postCustomerTokenIdpModel, 'postCustomerTokenIdpModel', 'createCustomerToken');
+
+        const headers: HttpHeaders = {
+            'Content-Type': 'application/json',
+            ...(this.configuration.username != null && this.configuration.password != null ? { Authorization: `Basic ${btoa(this.configuration.username + ':' + this.configuration.password)}` } : undefined),
+            // oauth required
+            ...(this.configuration.accessToken != null
+                ? { Authorization: typeof this.configuration.accessToken === 'function'
+                    ? this.configuration.accessToken('oauth2', [])
+                    : this.configuration.accessToken }
+                : undefined
+            ),
+        };
+
+        return this.request<CustomerTokenIdpModel>({
+            url: '/api/customer_tokens',
+            method: 'POST',
+            headers,
+            body: postCustomerTokenIdpModel,
+        }, opts?.responseOpts);
+    };
+
 }

@@ -13,19 +13,13 @@
 
 /**
  * @export
- * @interface PostBankApplicationIdpModel
+ * @interface CustomerTokenIdpModel
  */
-export interface PostBankApplicationIdpModel {
+export interface CustomerTokenIdpModel {
     /**
-     * Name for the bank application.
+     * The JWT access token for the customer.
      * @type {string}
-     * @memberof PostBankApplicationIdpModel
+     * @memberof CustomerTokenIdpModel
      */
-    name: string;
-    /**
-     * Bank guid the application is associated to.
-     * @type {string}
-     * @memberof PostBankApplicationIdpModel
-     */
-    bank_guid?: string;
+    access_token?: string;
 }
