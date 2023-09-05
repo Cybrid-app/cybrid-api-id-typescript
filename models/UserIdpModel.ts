@@ -13,13 +13,31 @@
 
 /**
  * @export
- * @interface CustomerTokenIdpModel
+ * @interface UserIdpModel
  */
-export interface CustomerTokenIdpModel {
+export interface UserIdpModel {
     /**
-     * The JWT access token for the customer.
+     * Auto-generated unique identifier for the user.
      * @type {string}
-     * @memberof CustomerTokenIdpModel
+     * @memberof UserIdpModel
      */
-    access_token?: string;
+    guid?: string;
+    /**
+     * The user\'s username.
+     * @type {string}
+     * @memberof UserIdpModel
+     */
+    username?: string;
+    /**
+     * The user\'s email address.
+     * @type {string}
+     * @memberof UserIdpModel
+     */
+    email?: string;
+    /**
+     * ISO8601 datetime the application was created at.
+     * @type {string}
+     * @memberof UserIdpModel
+     */
+    created_at?: string;
 }

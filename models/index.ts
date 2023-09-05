@@ -6,3 +6,5 @@ export * from './CustomerTokenIdpModel';
 export * from './PostBankApplicationIdpModel';
 export * from './PostCustomerTokenIdpModel';
 export * from './PostOrganizationApplicationIdpModel';
+export * from './PostUserIdpModel';
+export * from './UserIdpModel';

@@ -11,15 +11,51 @@
  * Do not edit the class manually.
  */
 
+import type { Observable } from 'rxjs';
+import type { AjaxResponse } from 'rxjs/ajax';
+import { BaseAPI, throwIfNullOrUndefined } from '../runtime';
+import type { OperationOpts, HttpHeaders } from '../runtime';
+import type {
+    PostUserIdpModel,
+    UserIdpModel,
+} from '../models';
+
+export interface CreateUserRequest {
+    postUserIdpModel: PostUserIdpModel;
+}
+
 /**
- * @export
- * @interface CustomerTokenIdpModel
+ * no description
  */
-export interface CustomerTokenIdpModel {
+export class UserIdpApi extends BaseAPI {
+
     /**
-     * The JWT access token for the customer.
-     * @type {string}
-     * @memberof CustomerTokenIdpModel
+     * Creates a user.  
+     * Create user
      */
-    access_token?: string;
+    createUser({ postUserIdpModel }: CreateUserRequest): Observable<UserIdpModel>
+    createUser({ postUserIdpModel }: CreateUserRequest, opts?: OperationOpts): Observable<AjaxResponse<UserIdpModel>>
+    createUser({ postUserIdpModel }: CreateUserRequest, opts?: OperationOpts): Observable<UserIdpModel | AjaxResponse<UserIdpModel>> {
+        throwIfNullOrUndefined(postUserIdpModel, 'postUserIdpModel', 'createUser');
+
+        const headers: HttpHeaders = {
+            'Content-Type': 'application/json',
+            ...(this.configuration.username != null && this.configuration.password != null ? { Authorization: `Basic ${btoa(this.configuration.username + ':' + this.configuration.password)}` } : undefined),
+            // oauth required
+            ...(this.configuration.accessToken != null
+                ? { Authorization: typeof this.configuration.accessToken === 'function'
+                    ? this.configuration.accessToken('oauth2', ['users:execute'])
+                    : this.configuration.accessToken }
+                : undefined
+            ),
+        };
+
+        return this.request<UserIdpModel>({
+            url: '/api/users',
+            method: 'POST',
+            headers,
+            body: postUserIdpModel,
+        }, opts?.responseOpts);
+    };
+
 }

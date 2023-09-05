@@ -13,13 +13,13 @@
 
 /**
  * @export
- * @interface CustomerTokenIdpModel
+ * @interface PostUserIdpModel
  */
-export interface CustomerTokenIdpModel {
+export interface PostUserIdpModel {
     /**
-     * The JWT access token for the customer.
+     * The email address associated with the user.
      * @type {string}
-     * @memberof CustomerTokenIdpModel
+     * @memberof PostUserIdpModel
      */
-    access_token?: string;
+    email: string;
 }
