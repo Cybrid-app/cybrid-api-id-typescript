@@ -11,15 +11,91 @@
  * Do not edit the class manually.
  */
 
+import type { Observable } from 'rxjs';
+import type { AjaxResponse } from 'rxjs/ajax';
+import { BaseAPI, throwIfNullOrUndefined } from '../runtime';
+import type { OperationOpts, HttpHeaders, HttpQuery } from '../runtime';
+import type {
+    PostUserIdpModel,
+    UserIdpModel,
+    UserListIdpModel,
+} from '../models';
+
+export interface CreateUserRequest {
+    postUserIdpModel: PostUserIdpModel;
+}
+
+export interface ListUserRequest {
+    page?: number;
+    perPage?: number;
+    guid?: string;
+}
+
 /**
- * @export
- * @interface PostUserIdpModel
+ * no description
  */
-export interface PostUserIdpModel {
+export class UsersIdpApi extends BaseAPI {
+
     /**
-     * The email address associated with the user.
-     * @type {string}
-     * @memberof PostUserIdpModel
+     * Creates a user.  
+     * Create user
      */
-    email: string;
+    createUser({ postUserIdpModel }: CreateUserRequest): Observable<UserIdpModel>
+    createUser({ postUserIdpModel }: CreateUserRequest, opts?: OperationOpts): Observable<AjaxResponse<UserIdpModel>>
+    createUser({ postUserIdpModel }: CreateUserRequest, opts?: OperationOpts): Observable<UserIdpModel | AjaxResponse<UserIdpModel>> {
+        throwIfNullOrUndefined(postUserIdpModel, 'postUserIdpModel', 'createUser');
+
+        const headers: HttpHeaders = {
+            'Content-Type': 'application/json',
+            ...(this.configuration.username != null && this.configuration.password != null ? { Authorization: `Basic ${btoa(this.configuration.username + ':' + this.configuration.password)}` } : undefined),
+            // oauth required
+            ...(this.configuration.accessToken != null
+                ? { Authorization: typeof this.configuration.accessToken === 'function'
+                    ? this.configuration.accessToken('oauth2', ['users:execute'])
+                    : this.configuration.accessToken }
+                : undefined
+            ),
+        };
+
+        return this.request<UserIdpModel>({
+            url: '/api/users',
+            method: 'POST',
+            headers,
+            body: postUserIdpModel,
+        }, opts?.responseOpts);
+    };
+
+    /**
+     * Retrieve a list users.  Required scope: **users:read**
+     * List users
+     */
+    listUser({ page, perPage, guid }: ListUserRequest): Observable<UserListIdpModel>
+    listUser({ page, perPage, guid }: ListUserRequest, opts?: OperationOpts): Observable<AjaxResponse<UserListIdpModel>>
+    listUser({ page, perPage, guid }: ListUserRequest, opts?: OperationOpts): Observable<UserListIdpModel | AjaxResponse<UserListIdpModel>> {
+
+        const headers: HttpHeaders = {
+            ...(this.configuration.username != null && this.configuration.password != null ? { Authorization: `Basic ${btoa(this.configuration.username + ':' + this.configuration.password)}` } : undefined),
+            // oauth required
+            ...(this.configuration.accessToken != null
+                ? { Authorization: typeof this.configuration.accessToken === 'function'
+                    ? this.configuration.accessToken('oauth2', ['users:read'])
+                    : this.configuration.accessToken }
+                : undefined
+            ),
+        };
+
+        const query: HttpQuery = {};
+
+        if (page != null) { query['page'] = page; }
+        if (perPage != null) { query['per_page'] = perPage; }
+        if (guid != null) { query['guid'] = guid; }
+
+        return this.request<UserListIdpModel>({
+            url: '/api/users',
+            method: 'GET',
+            headers,
+            query,
+        }, opts?.responseOpts);
+    };
+
 }

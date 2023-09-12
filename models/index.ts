@@ -8,3 +8,4 @@ export * from './PostCustomerTokenIdpModel';
 export * from './PostOrganizationApplicationIdpModel';
 export * from './PostUserIdpModel';
 export * from './UserIdpModel';
+export * from './UserListIdpModel';

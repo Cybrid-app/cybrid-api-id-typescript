@@ -11,15 +11,37 @@
  * Do not edit the class manually.
  */
 
+import type {
+    UserIdpModel,
+} from './';
+
 /**
  * @export
- * @interface PostUserIdpModel
+ * @interface UserListIdpModel
  */
-export interface PostUserIdpModel {
+export interface UserListIdpModel {
     /**
-     * The email address associated with the user.
-     * @type {string}
-     * @memberof PostUserIdpModel
+     * The total number of users available.
+     * @type {number}
+     * @memberof UserListIdpModel
      */
-    email: string;
+    total: number;
+    /**
+     * The page index.
+     * @type {number}
+     * @memberof UserListIdpModel
+     */
+    page: number;
+    /**
+     * The number of records per page returned.
+     * @type {number}
+     * @memberof UserListIdpModel
+     */
+    per_page: number;
+    /**
+     * Array of applications
+     * @type {Array<UserIdpModel>}
+     * @memberof UserListIdpModel
+     */
+    objects: Array<UserIdpModel>;
 }
