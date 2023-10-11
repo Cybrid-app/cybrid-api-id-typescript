@@ -13,47 +13,25 @@
 
 /**
  * @export
- * @interface PostCustomerTokenIdpModel
+ * @interface ErrorResponseIdpModel
  */
-export interface PostCustomerTokenIdpModel {
+export interface ErrorResponseIdpModel {
     /**
-     * Customer guid the access token is being generated for.
+     * Status code for Http Request
+     * @type {number}
+     * @memberof ErrorResponseIdpModel
+     */
+    status: number;
+    /**
+     * Error message
      * @type {string}
-     * @memberof PostCustomerTokenIdpModel
+     * @memberof ErrorResponseIdpModel
      */
-    customer_guid: string;
+    error_message: string;
     /**
-     * List of the scopes requested for the access token.
-     * @type {Array<string>}
-     * @memberof PostCustomerTokenIdpModel
+     * Message code for Error
+     * @type {string}
+     * @memberof ErrorResponseIdpModel
      */
-    scopes: Array<PostCustomerTokenIdpModelScopesEnum>;
+    message_code: string;
 }
-
-/**
- * @export
- * @enum {string}
- */
-export enum PostCustomerTokenIdpModelScopesEnum {
-    Customersread = 'customers:read',
-    Customerswrite = 'customers:write',
-    Accountsread = 'accounts:read',
-    Accountsexecute = 'accounts:execute',
-    Pricesread = 'prices:read',
-    Quotesread = 'quotes:read',
-    Quotesexecute = 'quotes:execute',
-    Tradesread = 'trades:read',
-    Tradesexecute = 'trades:execute',
-    Transfersread = 'transfers:read',
-    Transfersexecute = 'transfers:execute',
-    ExternalBankAccountsread = 'external_bank_accounts:read',
-    ExternalBankAccountswrite = 'external_bank_accounts:write',
-    ExternalBankAccountsexecute = 'external_bank_accounts:execute',
-    ExternalWalletsread = 'external_wallets:read',
-    ExternalWalletsexecute = 'external_wallets:execute',
-    Workflowsread = 'workflows:read',
-    Workflowsexecute = 'workflows:execute',
-    DepositAddressesread = 'deposit_addresses:read',
-    DepositAddressesexecute = 'deposit_addresses:execute'
-}
-

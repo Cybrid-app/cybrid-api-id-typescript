@@ -3,6 +3,7 @@ export * from './ApplicationListIdpModel';
 export * from './ApplicationWithSecretAllOfIdpModel';
 export * from './ApplicationWithSecretIdpModel';
 export * from './CustomerTokenIdpModel';
+export * from './ErrorResponseIdpModel';
 export * from './PostBankApplicationIdpModel';
 export * from './PostCustomerTokenIdpModel';
 export * from './PostOrganizationApplicationIdpModel';
