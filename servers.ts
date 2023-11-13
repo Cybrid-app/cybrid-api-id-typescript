@@ -38,6 +38,7 @@ export class ServerConfiguration<T extends { [key: string]: string }> {
     }
 }
 
-const server1 = new ServerConfiguration<{  "defaultHost": string  }>("https://id.sandbox.cybrid.app", {  "defaultHost": "https://id.sandbox.cybrid.app"  }, "");
+const server1 = new ServerConfiguration<{  }>("https://id.sandbox.cybrid.app", {  }, "Sandbox environment is for public use and uses simulated money movement");
+const server2 = new ServerConfiguration<{  }>("https://id.production.cybrid.app", {  }, "Production environment is for public use and uses real money movement");
 
-export const servers = [server1];
+export const servers = [server1, server2];
