@@ -11,15 +11,48 @@
  * Do not edit the class manually.
  */
 
+import type { Observable } from 'rxjs';
+import type { AjaxResponse } from 'rxjs/ajax';
+import { BaseAPI, throwIfNullOrUndefined, encodeURI } from '../runtime';
+import type { OperationOpts, HttpHeaders } from '../runtime';
+import type {
+    ErrorResponseIdpModel,
+} from '../models';
+
+export interface DiscardApplicationRequest {
+    clientId: string;
+}
+
 /**
- * @export
- * @interface PostUserIdpModel
+ * no description
  */
-export interface PostUserIdpModel {
+export class ApplicationsIdpApi extends BaseAPI {
+
     /**
-     * The email address associated with the user.
-     * @type {string}
-     * @memberof PostUserIdpModel
+     * Discards an application. Application is not deleted, all access tokens are revoked.Required scope: **organization_applications:execute**
+     * Discard Application
      */
-    email: string;
+    discardApplication({ clientId }: DiscardApplicationRequest): Observable<void>
+    discardApplication({ clientId }: DiscardApplicationRequest, opts?: OperationOpts): Observable<void | AjaxResponse<void>>
+    discardApplication({ clientId }: DiscardApplicationRequest, opts?: OperationOpts): Observable<void | AjaxResponse<void>> {
+        throwIfNullOrUndefined(clientId, 'clientId', 'discardApplication');
+
+        const headers: HttpHeaders = {
+            ...(this.configuration.username != null && this.configuration.password != null ? { Authorization: `Basic ${btoa(this.configuration.username + ':' + this.configuration.password)}` } : undefined),
+            // oauth required
+            ...(this.configuration.accessToken != null
+                ? { Authorization: typeof this.configuration.accessToken === 'function'
+                    ? this.configuration.accessToken('oauth2', ['organization_applications:execute'])
+                    : this.configuration.accessToken }
+                : undefined
+            ),
+        };
+
+        return this.request<void>({
+            url: '/api/applications/{client_id}'.replace('{client_id}', encodeURI(clientId)),
+            method: 'DELETE',
+            headers,
+        }, opts?.responseOpts);
+    };
+
 }
