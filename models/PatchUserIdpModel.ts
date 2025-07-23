@@ -11,13 +11,82 @@
  * Do not edit the class manually.
  */
 
-import type {
-    ApplicationIdpModel,
-    ApplicationWithSecretAllOfIdpModel,
-} from './';
+/**
+ * @export
+ * @interface PatchUserIdpModel
+ */
+export interface PatchUserIdpModel {
+    /**
+     * List of scopes that the user is allowed to request.
+     * @type {Array<string>}
+     * @memberof PatchUserIdpModel
+     */
+    allowed_scopes: Array<PatchUserIdpModelAllowedScopesEnum>;
+}
 
 /**
- * @type ApplicationWithSecretIdpModel
  * @export
+ * @enum {string}
  */
-export type ApplicationWithSecretIdpModel = ApplicationIdpModel & ApplicationWithSecretAllOfIdpModel;
+export enum PatchUserIdpModelAllowedScopesEnum {
+    Organizationsread = 'organizations:read',
+    Organizationswrite = 'organizations:write',
+    OrganizationApplicationsexecute = 'organization_applications:execute',
+    Banksread = 'banks:read',
+    Bankswrite = 'banks:write',
+    Banksexecute = 'banks:execute',
+    BankApplicationsexecute = 'bank_applications:execute',
+    Usersread = 'users:read',
+    Userswrite = 'users:write',
+    Usersexecute = 'users:execute',
+    Accountsread = 'accounts:read',
+    Accountsexecute = 'accounts:execute',
+    Counterpartiesread = 'counterparties:read',
+    Counterpartiespiiread = 'counterparties:pii:read',
+    Counterpartieswrite = 'counterparties:write',
+    Counterpartiesexecute = 'counterparties:execute',
+    Customersread = 'customers:read',
+    Customerspiiread = 'customers:pii:read',
+    Customerswrite = 'customers:write',
+    Customersexecute = 'customers:execute',
+    Pricesread = 'prices:read',
+    Quotesexecute = 'quotes:execute',
+    Quotesread = 'quotes:read',
+    Tradesexecute = 'trades:execute',
+    Tradesread = 'trades:read',
+    Transfersexecute = 'transfers:execute',
+    Transfersread = 'transfers:read',
+    Transferswrite = 'transfers:write',
+    ExternalBankAccountsread = 'external_bank_accounts:read',
+    ExternalBankAccountspiiread = 'external_bank_accounts:pii:read',
+    ExternalBankAccountswrite = 'external_bank_accounts:write',
+    ExternalBankAccountsexecute = 'external_bank_accounts:execute',
+    ExternalWalletsread = 'external_wallets:read',
+    ExternalWalletsexecute = 'external_wallets:execute',
+    Workflowsread = 'workflows:read',
+    Workflowsexecute = 'workflows:execute',
+    DepositAddressesread = 'deposit_addresses:read',
+    DepositAddressesexecute = 'deposit_addresses:execute',
+    DepositBankAccountsread = 'deposit_bank_accounts:read',
+    DepositBankAccountsexecute = 'deposit_bank_accounts:execute',
+    Invoicesread = 'invoices:read',
+    Invoiceswrite = 'invoices:write',
+    Invoicesexecute = 'invoices:execute',
+    Subscriptionsread = 'subscriptions:read',
+    Subscriptionswrite = 'subscriptions:write',
+    Subscriptionsexecute = 'subscriptions:execute',
+    SubscriptionEventsread = 'subscription_events:read',
+    SubscriptionEventsexecute = 'subscription_events:execute',
+    IdentityVerificationsread = 'identity_verifications:read',
+    IdentityVerificationspiiread = 'identity_verifications:pii:read',
+    IdentityVerificationswrite = 'identity_verifications:write',
+    IdentityVerificationsexecute = 'identity_verifications:execute',
+    PersonaSessionsexecute = 'persona_sessions:execute',
+    Filesread = 'files:read',
+    Filespiiread = 'files:pii:read',
+    Filesexecute = 'files:execute',
+    Openid = 'openid',
+    Profile = 'profile',
+    Email = 'email'
+}
+
