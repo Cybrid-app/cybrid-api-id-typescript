@@ -12,71 +12,21 @@
  */
 
 /**
- * Request body for customer token creation.
+ * Request body for application update.
  * @export
- * @interface PostCustomerTokenIdpModel
+ * @interface PatchApplicationIdpModel
  */
-export interface PostCustomerTokenIdpModel {
+export interface PatchApplicationIdpModel {
     /**
-     * Customer guid the access token is being generated for.
+     * Name for the application.
      * @type {string}
-     * @memberof PostCustomerTokenIdpModel
+     * @memberof PatchApplicationIdpModel
      */
-    customer_guid: string;
+    name?: string;
     /**
-     * List of the scopes requested for the access token.
+     * List of public IPv4 addresses or CIDR ranges to allowlist for API access. Provide [] to clear the allowlist; omit to leave unchanged.
      * @type {Array<string>}
-     * @memberof PostCustomerTokenIdpModel
+     * @memberof PatchApplicationIdpModel
      */
-    scopes: Array<PostCustomerTokenIdpModelScopesEnum>;
+    ip_allowlist?: Array<string>;
 }
-
-/**
- * @export
- * @enum {string}
- */
-export enum PostCustomerTokenIdpModelScopesEnum {
-    Counterpartiesread = 'counterparties:read',
-    Counterpartiespiiread = 'counterparties:pii:read',
-    Counterpartieswrite = 'counterparties:write',
-    Counterpartiesexecute = 'counterparties:execute',
-    Customersread = 'customers:read',
-    Customerspiiread = 'customers:pii:read',
-    Customerswrite = 'customers:write',
-    Accountsread = 'accounts:read',
-    Accountsexecute = 'accounts:execute',
-    Pricesread = 'prices:read',
-    Quotesread = 'quotes:read',
-    Quotesexecute = 'quotes:execute',
-    Tradesread = 'trades:read',
-    Tradesexecute = 'trades:execute',
-    Transfersread = 'transfers:read',
-    Transferswrite = 'transfers:write',
-    Transfersexecute = 'transfers:execute',
-    ExternalBankAccountsread = 'external_bank_accounts:read',
-    ExternalBankAccountspiiread = 'external_bank_accounts:pii:read',
-    ExternalBankAccountswrite = 'external_bank_accounts:write',
-    ExternalBankAccountsexecute = 'external_bank_accounts:execute',
-    ExternalWalletsread = 'external_wallets:read',
-    ExternalWalletsexecute = 'external_wallets:execute',
-    Workflowsread = 'workflows:read',
-    Workflowsexecute = 'workflows:execute',
-    DepositAddressesread = 'deposit_addresses:read',
-    DepositAddressesexecute = 'deposit_addresses:execute',
-    DepositBankAccountsread = 'deposit_bank_accounts:read',
-    DepositBankAccountsexecute = 'deposit_bank_accounts:execute',
-    Invoicesread = 'invoices:read',
-    Invoiceswrite = 'invoices:write',
-    Invoicesexecute = 'invoices:execute',
-    IdentityVerificationsread = 'identity_verifications:read',
-    IdentityVerificationspiiread = 'identity_verifications:pii:read',
-    IdentityVerificationswrite = 'identity_verifications:write',
-    IdentityVerificationsexecute = 'identity_verifications:execute',
-    PersonaSessionsexecute = 'persona_sessions:execute',
-    SardineSessionsexecute = 'sardine_sessions:execute',
-    Plansexecute = 'plans:execute',
-    Plansread = 'plans:read',
-    Executionsexecute = 'executions:execute',
-    Executionsread = 'executions:read'
-}
-
