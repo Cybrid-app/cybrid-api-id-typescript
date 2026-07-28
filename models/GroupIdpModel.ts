@@ -11,189 +11,45 @@
  * Do not edit the class manually.
  */
 
-import type { Observable } from 'rxjs';
-import type { AjaxResponse } from 'rxjs/ajax';
-import { BaseAPI, throwIfNullOrUndefined, encodeURI } from '../runtime';
-import type { OperationOpts, HttpHeaders, HttpQuery } from '../runtime';
-import type {
-    ApplicationIdpModel,
-    ApplicationListIdpModel,
-    ApplicationWithSecretIdpModel,
-    ErrorResponseIdpModel,
-    PatchApplicationIdpModel,
-    PostOrganizationApplicationIdpModel,
-} from '../models';
-
-export interface CreateOrganizationApplicationRequest {
-    postOrganizationApplicationIdpModel: PostOrganizationApplicationIdpModel;
-}
-
-export interface DeleteOrganizationApplicationRequest {
-    clientId: string;
-}
-
-export interface GetOrganizationApplicationRequest {
-    clientId: string;
-}
-
-export interface ListOrganizationApplicationsRequest {
-    page?: number;
-    perPage?: number;
-}
-
-export interface UpdateOrganizationApplicationRequest {
-    clientId: string;
-    patchApplicationIdpModel: PatchApplicationIdpModel;
-}
-
 /**
- * no description
+ * @export
+ * @interface GroupIdpModel
  */
-export class OrganizationApplicationsIdpApi extends BaseAPI {
-
+export interface GroupIdpModel {
     /**
-     * Create an organization OAuth2 application.  Required scope: **organization_applications:execute**
-     * Create organization application
+     * The group\'s guid.
+     * @type {string}
+     * @memberof GroupIdpModel
      */
-    createOrganizationApplication({ postOrganizationApplicationIdpModel }: CreateOrganizationApplicationRequest): Observable<ApplicationWithSecretIdpModel>
-    createOrganizationApplication({ postOrganizationApplicationIdpModel }: CreateOrganizationApplicationRequest, opts?: OperationOpts): Observable<AjaxResponse<ApplicationWithSecretIdpModel>>
-    createOrganizationApplication({ postOrganizationApplicationIdpModel }: CreateOrganizationApplicationRequest, opts?: OperationOpts): Observable<ApplicationWithSecretIdpModel | AjaxResponse<ApplicationWithSecretIdpModel>> {
-        throwIfNullOrUndefined(postOrganizationApplicationIdpModel, 'postOrganizationApplicationIdpModel', 'createOrganizationApplication');
-
-        const headers: HttpHeaders = {
-            'Content-Type': 'application/json',
-            ...(this.configuration.username != null && this.configuration.password != null ? { Authorization: `Basic ${btoa(this.configuration.username + ':' + this.configuration.password)}` } : undefined),
-            // oauth required
-            ...(this.configuration.accessToken != null
-                ? { Authorization: typeof this.configuration.accessToken === 'function'
-                    ? this.configuration.accessToken('oauth2', ['organization_applications:execute'])
-                    : this.configuration.accessToken }
-                : undefined
-            ),
-        };
-
-        return this.request<ApplicationWithSecretIdpModel>({
-            url: '/api/organization_applications',
-            method: 'POST',
-            headers,
-            body: postOrganizationApplicationIdpModel,
-        }, opts?.responseOpts);
-    };
-
+    guid: string;
     /**
-     * Deletes an application.Required scope: **organization_applications:execute**
-     * Delete organization application
+     * Name provided for the group.
+     * @type {string}
+     * @memberof GroupIdpModel
      */
-    deleteOrganizationApplication({ clientId }: DeleteOrganizationApplicationRequest): Observable<void>
-    deleteOrganizationApplication({ clientId }: DeleteOrganizationApplicationRequest, opts?: OperationOpts): Observable<void | AjaxResponse<void>>
-    deleteOrganizationApplication({ clientId }: DeleteOrganizationApplicationRequest, opts?: OperationOpts): Observable<void | AjaxResponse<void>> {
-        throwIfNullOrUndefined(clientId, 'clientId', 'deleteOrganizationApplication');
-
-        const headers: HttpHeaders = {
-            ...(this.configuration.username != null && this.configuration.password != null ? { Authorization: `Basic ${btoa(this.configuration.username + ':' + this.configuration.password)}` } : undefined),
-            // oauth required
-            ...(this.configuration.accessToken != null
-                ? { Authorization: typeof this.configuration.accessToken === 'function'
-                    ? this.configuration.accessToken('oauth2', ['organization_applications:execute'])
-                    : this.configuration.accessToken }
-                : undefined
-            ),
-        };
-
-        return this.request<void>({
-            url: '/api/organization_applications/{client_id}'.replace('{client_id}', encodeURI(clientId)),
-            method: 'DELETE',
-            headers,
-        }, opts?.responseOpts);
-    };
-
+    name: string;
     /**
-     * Retrieves an organization application.  Required scope: **organization_applications:read**
-     * Get organization application
+     * Type of the group.
+     * @type {string}
+     * @memberof GroupIdpModel
      */
-    getOrganizationApplication({ clientId }: GetOrganizationApplicationRequest): Observable<ApplicationIdpModel>
-    getOrganizationApplication({ clientId }: GetOrganizationApplicationRequest, opts?: OperationOpts): Observable<AjaxResponse<ApplicationIdpModel>>
-    getOrganizationApplication({ clientId }: GetOrganizationApplicationRequest, opts?: OperationOpts): Observable<ApplicationIdpModel | AjaxResponse<ApplicationIdpModel>> {
-        throwIfNullOrUndefined(clientId, 'clientId', 'getOrganizationApplication');
-
-        const headers: HttpHeaders = {
-            ...(this.configuration.username != null && this.configuration.password != null ? { Authorization: `Basic ${btoa(this.configuration.username + ':' + this.configuration.password)}` } : undefined),
-            // oauth required
-            ...(this.configuration.accessToken != null
-                ? { Authorization: typeof this.configuration.accessToken === 'function'
-                    ? this.configuration.accessToken('oauth2', ['organization_applications:read'])
-                    : this.configuration.accessToken }
-                : undefined
-            ),
-        };
-
-        return this.request<ApplicationIdpModel>({
-            url: '/api/organization_applications/{client_id}'.replace('{client_id}', encodeURI(clientId)),
-            method: 'GET',
-            headers,
-        }, opts?.responseOpts);
-    };
-
+    type: string;
     /**
-     * Retrieve a list of organization OAuth2 applications.  Required scope: **organizations:read**
-     * List organization applications
+     * Guids of the users who are members of the group.
+     * @type {Array<string>}
+     * @memberof GroupIdpModel
      */
-    listOrganizationApplications({ page, perPage }: ListOrganizationApplicationsRequest): Observable<ApplicationListIdpModel>
-    listOrganizationApplications({ page, perPage }: ListOrganizationApplicationsRequest, opts?: OperationOpts): Observable<AjaxResponse<ApplicationListIdpModel>>
-    listOrganizationApplications({ page, perPage }: ListOrganizationApplicationsRequest, opts?: OperationOpts): Observable<ApplicationListIdpModel | AjaxResponse<ApplicationListIdpModel>> {
-
-        const headers: HttpHeaders = {
-            ...(this.configuration.username != null && this.configuration.password != null ? { Authorization: `Basic ${btoa(this.configuration.username + ':' + this.configuration.password)}` } : undefined),
-            // oauth required
-            ...(this.configuration.accessToken != null
-                ? { Authorization: typeof this.configuration.accessToken === 'function'
-                    ? this.configuration.accessToken('oauth2', ['organizations:read'])
-                    : this.configuration.accessToken }
-                : undefined
-            ),
-        };
-
-        const query: HttpQuery = {};
-
-        if (page != null) { query['page'] = page; }
-        if (perPage != null) { query['per_page'] = perPage; }
-
-        return this.request<ApplicationListIdpModel>({
-            url: '/api/organization_applications',
-            method: 'GET',
-            headers,
-            query,
-        }, opts?.responseOpts);
-    };
-
+    member_guids: Array<string>;
     /**
-     * Updates an organization application.  Required scope: **organization_applications:write**
-     * Update organization application
+     * ISO8601 datetime the record was created at.
+     * @type {string}
+     * @memberof GroupIdpModel
      */
-    updateOrganizationApplication({ clientId, patchApplicationIdpModel }: UpdateOrganizationApplicationRequest): Observable<ApplicationIdpModel>
-    updateOrganizationApplication({ clientId, patchApplicationIdpModel }: UpdateOrganizationApplicationRequest, opts?: OperationOpts): Observable<AjaxResponse<ApplicationIdpModel>>
-    updateOrganizationApplication({ clientId, patchApplicationIdpModel }: UpdateOrganizationApplicationRequest, opts?: OperationOpts): Observable<ApplicationIdpModel | AjaxResponse<ApplicationIdpModel>> {
-        throwIfNullOrUndefined(clientId, 'clientId', 'updateOrganizationApplication');
-        throwIfNullOrUndefined(patchApplicationIdpModel, 'patchApplicationIdpModel', 'updateOrganizationApplication');
-
-        const headers: HttpHeaders = {
-            'Content-Type': 'application/json',
-            ...(this.configuration.username != null && this.configuration.password != null ? { Authorization: `Basic ${btoa(this.configuration.username + ':' + this.configuration.password)}` } : undefined),
-            // oauth required
-            ...(this.configuration.accessToken != null
-                ? { Authorization: typeof this.configuration.accessToken === 'function'
-                    ? this.configuration.accessToken('oauth2', ['organization_applications:write'])
-                    : this.configuration.accessToken }
-                : undefined
-            ),
-        };
-
-        return this.request<ApplicationIdpModel>({
-            url: '/api/organization_applications/{client_id}'.replace('{client_id}', encodeURI(clientId)),
-            method: 'PATCH',
-            headers,
-            body: patchApplicationIdpModel,
-        }, opts?.responseOpts);
-    };
-
+    created_at: string;
+    /**
+     * ISO8601 datetime the record was last updated at.
+     * @type {string}
+     * @memberof GroupIdpModel
+     */
+    updated_at?: string;
 }
