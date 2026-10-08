@@ -11,189 +11,57 @@
  * Do not edit the class manually.
  */
 
-import type { Observable } from 'rxjs';
-import type { AjaxResponse } from 'rxjs/ajax';
-import { BaseAPI, throwIfNullOrUndefined, encodeURI } from '../runtime';
-import type { OperationOpts, HttpHeaders, HttpQuery } from '../runtime';
-import type {
-    ApplicationIdpModel,
-    ApplicationListIdpModel,
-    ApplicationWithSecretIdpModel,
-    ErrorResponseIdpModel,
-    PatchApplicationIdpModel,
-    PostOrganizationApplicationIdpModel,
-} from '../models';
-
-export interface CreateOrganizationApplicationRequest {
-    postOrganizationApplicationIdpModel: PostOrganizationApplicationIdpModel;
-}
-
-export interface DeleteOrganizationApplicationRequest {
-    clientId: string;
-}
-
-export interface GetOrganizationApplicationRequest {
-    clientId: string;
-}
-
-export interface ListOrganizationApplicationsRequest {
-    page?: number;
-    perPage?: number;
-}
-
-export interface UpdateOrganizationApplicationRequest {
-    clientId: string;
-    patchApplicationIdpModel: PatchApplicationIdpModel;
-}
-
 /**
- * no description
+ * @export
+ * @interface AccessTokenIdpModel
  */
-export class OrganizationApplicationsIdpApi extends BaseAPI {
-
+export interface AccessTokenIdpModel {
     /**
-     * Create an organization OAuth2 application.  Required scope: **organization_applications:execute**
-     * Create organization application
+     * Identifier of the access token.
+     * @type {number}
+     * @memberof AccessTokenIdpModel
      */
-    createOrganizationApplication({ postOrganizationApplicationIdpModel }: CreateOrganizationApplicationRequest): Observable<ApplicationWithSecretIdpModel>
-    createOrganizationApplication({ postOrganizationApplicationIdpModel }: CreateOrganizationApplicationRequest, opts?: OperationOpts): Observable<AjaxResponse<ApplicationWithSecretIdpModel>>
-    createOrganizationApplication({ postOrganizationApplicationIdpModel }: CreateOrganizationApplicationRequest, opts?: OperationOpts): Observable<ApplicationWithSecretIdpModel | AjaxResponse<ApplicationWithSecretIdpModel>> {
-        throwIfNullOrUndefined(postOrganizationApplicationIdpModel, 'postOrganizationApplicationIdpModel', 'createOrganizationApplication');
-
-        const headers: HttpHeaders = {
-            'Content-Type': 'application/json',
-            ...(this.configuration.username != null && this.configuration.password != null ? { Authorization: `Basic ${btoa(this.configuration.username + ':' + this.configuration.password)}` } : undefined),
-            // oauth required
-            ...(this.configuration.accessToken != null
-                ? { Authorization: typeof this.configuration.accessToken === 'function'
-                    ? this.configuration.accessToken('oauth2', [])
-                    : this.configuration.accessToken }
-                : undefined
-            ),
-        };
-
-        return this.request<ApplicationWithSecretIdpModel>({
-            url: '/api/organization_applications',
-            method: 'POST',
-            headers,
-            body: postOrganizationApplicationIdpModel,
-        }, opts?.responseOpts);
-    };
-
+    id: number;
     /**
-     * Deletes an application.Required scope: **organization_applications:execute**
-     * Delete organization application
+     * Client ID of the application the token was issued to.
+     * @type {string}
+     * @memberof AccessTokenIdpModel
      */
-    deleteOrganizationApplication({ clientId }: DeleteOrganizationApplicationRequest): Observable<void>
-    deleteOrganizationApplication({ clientId }: DeleteOrganizationApplicationRequest, opts?: OperationOpts): Observable<void | AjaxResponse<void>>
-    deleteOrganizationApplication({ clientId }: DeleteOrganizationApplicationRequest, opts?: OperationOpts): Observable<void | AjaxResponse<void>> {
-        throwIfNullOrUndefined(clientId, 'clientId', 'deleteOrganizationApplication');
-
-        const headers: HttpHeaders = {
-            ...(this.configuration.username != null && this.configuration.password != null ? { Authorization: `Basic ${btoa(this.configuration.username + ':' + this.configuration.password)}` } : undefined),
-            // oauth required
-            ...(this.configuration.accessToken != null
-                ? { Authorization: typeof this.configuration.accessToken === 'function'
-                    ? this.configuration.accessToken('oauth2', [])
-                    : this.configuration.accessToken }
-                : undefined
-            ),
-        };
-
-        return this.request<void>({
-            url: '/api/organization_applications/{client_id}'.replace('{client_id}', encodeURI(clientId)),
-            method: 'DELETE',
-            headers,
-        }, opts?.responseOpts);
-    };
-
+    application_client_id: string;
     /**
-     * Retrieves an organization application.  Required scope: **organization_applications:read**
-     * Get organization application
+     * Guid of the organization, bank or customer the issuing application belongs to.
+     * @type {string}
+     * @memberof AccessTokenIdpModel
      */
-    getOrganizationApplication({ clientId }: GetOrganizationApplicationRequest): Observable<ApplicationIdpModel>
-    getOrganizationApplication({ clientId }: GetOrganizationApplicationRequest, opts?: OperationOpts): Observable<AjaxResponse<ApplicationIdpModel>>
-    getOrganizationApplication({ clientId }: GetOrganizationApplicationRequest, opts?: OperationOpts): Observable<ApplicationIdpModel | AjaxResponse<ApplicationIdpModel>> {
-        throwIfNullOrUndefined(clientId, 'clientId', 'getOrganizationApplication');
-
-        const headers: HttpHeaders = {
-            ...(this.configuration.username != null && this.configuration.password != null ? { Authorization: `Basic ${btoa(this.configuration.username + ':' + this.configuration.password)}` } : undefined),
-            // oauth required
-            ...(this.configuration.accessToken != null
-                ? { Authorization: typeof this.configuration.accessToken === 'function'
-                    ? this.configuration.accessToken('oauth2', ['organization_applications:read'])
-                    : this.configuration.accessToken }
-                : undefined
-            ),
-        };
-
-        return this.request<ApplicationIdpModel>({
-            url: '/api/organization_applications/{client_id}'.replace('{client_id}', encodeURI(clientId)),
-            method: 'GET',
-            headers,
-        }, opts?.responseOpts);
-    };
-
+    application_guid: string | null;
     /**
-     * Retrieve a list of organization OAuth2 applications.  Required scope: **organizations:read**
-     * List organization applications
+     * Type of the resource owner: user, or application for customer tokens owned by a bank application.
+     * @type {string}
+     * @memberof AccessTokenIdpModel
      */
-    listOrganizationApplications({ page, perPage }: ListOrganizationApplicationsRequest): Observable<ApplicationListIdpModel>
-    listOrganizationApplications({ page, perPage }: ListOrganizationApplicationsRequest, opts?: OperationOpts): Observable<AjaxResponse<ApplicationListIdpModel>>
-    listOrganizationApplications({ page, perPage }: ListOrganizationApplicationsRequest, opts?: OperationOpts): Observable<ApplicationListIdpModel | AjaxResponse<ApplicationListIdpModel>> {
-
-        const headers: HttpHeaders = {
-            ...(this.configuration.username != null && this.configuration.password != null ? { Authorization: `Basic ${btoa(this.configuration.username + ':' + this.configuration.password)}` } : undefined),
-            // oauth required
-            ...(this.configuration.accessToken != null
-                ? { Authorization: typeof this.configuration.accessToken === 'function'
-                    ? this.configuration.accessToken('oauth2', ['organizations:read'])
-                    : this.configuration.accessToken }
-                : undefined
-            ),
-        };
-
-        const query: HttpQuery = {};
-
-        if (page != null) { query['page'] = page; }
-        if (perPage != null) { query['per_page'] = perPage; }
-
-        return this.request<ApplicationListIdpModel>({
-            url: '/api/organization_applications',
-            method: 'GET',
-            headers,
-            query,
-        }, opts?.responseOpts);
-    };
-
+    resource_owner_type: string | null;
     /**
-     * Updates an organization application.  Required scope: **organization_applications:write**
-     * Update organization application
+     * Guid of the user, or of the bank that owns the owning application.
+     * @type {string}
+     * @memberof AccessTokenIdpModel
      */
-    updateOrganizationApplication({ clientId, patchApplicationIdpModel }: UpdateOrganizationApplicationRequest): Observable<ApplicationIdpModel>
-    updateOrganizationApplication({ clientId, patchApplicationIdpModel }: UpdateOrganizationApplicationRequest, opts?: OperationOpts): Observable<AjaxResponse<ApplicationIdpModel>>
-    updateOrganizationApplication({ clientId, patchApplicationIdpModel }: UpdateOrganizationApplicationRequest, opts?: OperationOpts): Observable<ApplicationIdpModel | AjaxResponse<ApplicationIdpModel>> {
-        throwIfNullOrUndefined(clientId, 'clientId', 'updateOrganizationApplication');
-        throwIfNullOrUndefined(patchApplicationIdpModel, 'patchApplicationIdpModel', 'updateOrganizationApplication');
-
-        const headers: HttpHeaders = {
-            'Content-Type': 'application/json',
-            ...(this.configuration.username != null && this.configuration.password != null ? { Authorization: `Basic ${btoa(this.configuration.username + ':' + this.configuration.password)}` } : undefined),
-            // oauth required
-            ...(this.configuration.accessToken != null
-                ? { Authorization: typeof this.configuration.accessToken === 'function'
-                    ? this.configuration.accessToken('oauth2', [])
-                    : this.configuration.accessToken }
-                : undefined
-            ),
-        };
-
-        return this.request<ApplicationIdpModel>({
-            url: '/api/organization_applications/{client_id}'.replace('{client_id}', encodeURI(clientId)),
-            method: 'PATCH',
-            headers,
-            body: patchApplicationIdpModel,
-        }, opts?.responseOpts);
-    };
-
+    resource_owner_guid: string | null;
+    /**
+     * ISO8601 datetime the token was created at.
+     * @type {string}
+     * @memberof AccessTokenIdpModel
+     */
+    created_at: string;
+    /**
+     * Lifetime of the token in seconds. Null for tokens that do not expire.
+     * @type {number}
+     * @memberof AccessTokenIdpModel
+     */
+    expires_in: number | null;
+    /**
+     * ISO8601 datetime the token was revoked at. Null for tokens that are not revoked.
+     * @type {string}
+     * @memberof AccessTokenIdpModel
+     */
+    revoked_at: string | null;
 }

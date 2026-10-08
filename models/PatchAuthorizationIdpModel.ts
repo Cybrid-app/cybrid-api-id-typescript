@@ -11,189 +11,98 @@
  * Do not edit the class manually.
  */
 
-import type { Observable } from 'rxjs';
-import type { AjaxResponse } from 'rxjs/ajax';
-import { BaseAPI, throwIfNullOrUndefined, encodeURI } from '../runtime';
-import type { OperationOpts, HttpHeaders, HttpQuery } from '../runtime';
-import type {
-    ApplicationIdpModel,
-    ApplicationListIdpModel,
-    ApplicationWithSecretIdpModel,
-    ErrorResponseIdpModel,
-    PatchApplicationIdpModel,
-    PostOrganizationApplicationIdpModel,
-} from '../models';
-
-export interface CreateOrganizationApplicationRequest {
-    postOrganizationApplicationIdpModel: PostOrganizationApplicationIdpModel;
-}
-
-export interface DeleteOrganizationApplicationRequest {
-    clientId: string;
-}
-
-export interface GetOrganizationApplicationRequest {
-    clientId: string;
-}
-
-export interface ListOrganizationApplicationsRequest {
-    page?: number;
-    perPage?: number;
-}
-
-export interface UpdateOrganizationApplicationRequest {
-    clientId: string;
-    patchApplicationIdpModel: PatchApplicationIdpModel;
+/**
+ * Request body for user authorization update.
+ * @export
+ * @interface PatchAuthorizationIdpModel
+ */
+export interface PatchAuthorizationIdpModel {
+    /**
+     * List of scopes that the user is allowed to request.
+     * @type {Array<string>}
+     * @memberof PatchAuthorizationIdpModel
+     */
+    allowed_scopes: Array<PatchAuthorizationIdpModelAllowedScopesEnum>;
 }
 
 /**
- * no description
+ * @export
+ * @enum {string}
  */
-export class OrganizationApplicationsIdpApi extends BaseAPI {
-
-    /**
-     * Create an organization OAuth2 application.  Required scope: **organization_applications:execute**
-     * Create organization application
-     */
-    createOrganizationApplication({ postOrganizationApplicationIdpModel }: CreateOrganizationApplicationRequest): Observable<ApplicationWithSecretIdpModel>
-    createOrganizationApplication({ postOrganizationApplicationIdpModel }: CreateOrganizationApplicationRequest, opts?: OperationOpts): Observable<AjaxResponse<ApplicationWithSecretIdpModel>>
-    createOrganizationApplication({ postOrganizationApplicationIdpModel }: CreateOrganizationApplicationRequest, opts?: OperationOpts): Observable<ApplicationWithSecretIdpModel | AjaxResponse<ApplicationWithSecretIdpModel>> {
-        throwIfNullOrUndefined(postOrganizationApplicationIdpModel, 'postOrganizationApplicationIdpModel', 'createOrganizationApplication');
-
-        const headers: HttpHeaders = {
-            'Content-Type': 'application/json',
-            ...(this.configuration.username != null && this.configuration.password != null ? { Authorization: `Basic ${btoa(this.configuration.username + ':' + this.configuration.password)}` } : undefined),
-            // oauth required
-            ...(this.configuration.accessToken != null
-                ? { Authorization: typeof this.configuration.accessToken === 'function'
-                    ? this.configuration.accessToken('oauth2', [])
-                    : this.configuration.accessToken }
-                : undefined
-            ),
-        };
-
-        return this.request<ApplicationWithSecretIdpModel>({
-            url: '/api/organization_applications',
-            method: 'POST',
-            headers,
-            body: postOrganizationApplicationIdpModel,
-        }, opts?.responseOpts);
-    };
-
-    /**
-     * Deletes an application.Required scope: **organization_applications:execute**
-     * Delete organization application
-     */
-    deleteOrganizationApplication({ clientId }: DeleteOrganizationApplicationRequest): Observable<void>
-    deleteOrganizationApplication({ clientId }: DeleteOrganizationApplicationRequest, opts?: OperationOpts): Observable<void | AjaxResponse<void>>
-    deleteOrganizationApplication({ clientId }: DeleteOrganizationApplicationRequest, opts?: OperationOpts): Observable<void | AjaxResponse<void>> {
-        throwIfNullOrUndefined(clientId, 'clientId', 'deleteOrganizationApplication');
-
-        const headers: HttpHeaders = {
-            ...(this.configuration.username != null && this.configuration.password != null ? { Authorization: `Basic ${btoa(this.configuration.username + ':' + this.configuration.password)}` } : undefined),
-            // oauth required
-            ...(this.configuration.accessToken != null
-                ? { Authorization: typeof this.configuration.accessToken === 'function'
-                    ? this.configuration.accessToken('oauth2', [])
-                    : this.configuration.accessToken }
-                : undefined
-            ),
-        };
-
-        return this.request<void>({
-            url: '/api/organization_applications/{client_id}'.replace('{client_id}', encodeURI(clientId)),
-            method: 'DELETE',
-            headers,
-        }, opts?.responseOpts);
-    };
-
-    /**
-     * Retrieves an organization application.  Required scope: **organization_applications:read**
-     * Get organization application
-     */
-    getOrganizationApplication({ clientId }: GetOrganizationApplicationRequest): Observable<ApplicationIdpModel>
-    getOrganizationApplication({ clientId }: GetOrganizationApplicationRequest, opts?: OperationOpts): Observable<AjaxResponse<ApplicationIdpModel>>
-    getOrganizationApplication({ clientId }: GetOrganizationApplicationRequest, opts?: OperationOpts): Observable<ApplicationIdpModel | AjaxResponse<ApplicationIdpModel>> {
-        throwIfNullOrUndefined(clientId, 'clientId', 'getOrganizationApplication');
-
-        const headers: HttpHeaders = {
-            ...(this.configuration.username != null && this.configuration.password != null ? { Authorization: `Basic ${btoa(this.configuration.username + ':' + this.configuration.password)}` } : undefined),
-            // oauth required
-            ...(this.configuration.accessToken != null
-                ? { Authorization: typeof this.configuration.accessToken === 'function'
-                    ? this.configuration.accessToken('oauth2', ['organization_applications:read'])
-                    : this.configuration.accessToken }
-                : undefined
-            ),
-        };
-
-        return this.request<ApplicationIdpModel>({
-            url: '/api/organization_applications/{client_id}'.replace('{client_id}', encodeURI(clientId)),
-            method: 'GET',
-            headers,
-        }, opts?.responseOpts);
-    };
-
-    /**
-     * Retrieve a list of organization OAuth2 applications.  Required scope: **organizations:read**
-     * List organization applications
-     */
-    listOrganizationApplications({ page, perPage }: ListOrganizationApplicationsRequest): Observable<ApplicationListIdpModel>
-    listOrganizationApplications({ page, perPage }: ListOrganizationApplicationsRequest, opts?: OperationOpts): Observable<AjaxResponse<ApplicationListIdpModel>>
-    listOrganizationApplications({ page, perPage }: ListOrganizationApplicationsRequest, opts?: OperationOpts): Observable<ApplicationListIdpModel | AjaxResponse<ApplicationListIdpModel>> {
-
-        const headers: HttpHeaders = {
-            ...(this.configuration.username != null && this.configuration.password != null ? { Authorization: `Basic ${btoa(this.configuration.username + ':' + this.configuration.password)}` } : undefined),
-            // oauth required
-            ...(this.configuration.accessToken != null
-                ? { Authorization: typeof this.configuration.accessToken === 'function'
-                    ? this.configuration.accessToken('oauth2', ['organizations:read'])
-                    : this.configuration.accessToken }
-                : undefined
-            ),
-        };
-
-        const query: HttpQuery = {};
-
-        if (page != null) { query['page'] = page; }
-        if (perPage != null) { query['per_page'] = perPage; }
-
-        return this.request<ApplicationListIdpModel>({
-            url: '/api/organization_applications',
-            method: 'GET',
-            headers,
-            query,
-        }, opts?.responseOpts);
-    };
-
-    /**
-     * Updates an organization application.  Required scope: **organization_applications:write**
-     * Update organization application
-     */
-    updateOrganizationApplication({ clientId, patchApplicationIdpModel }: UpdateOrganizationApplicationRequest): Observable<ApplicationIdpModel>
-    updateOrganizationApplication({ clientId, patchApplicationIdpModel }: UpdateOrganizationApplicationRequest, opts?: OperationOpts): Observable<AjaxResponse<ApplicationIdpModel>>
-    updateOrganizationApplication({ clientId, patchApplicationIdpModel }: UpdateOrganizationApplicationRequest, opts?: OperationOpts): Observable<ApplicationIdpModel | AjaxResponse<ApplicationIdpModel>> {
-        throwIfNullOrUndefined(clientId, 'clientId', 'updateOrganizationApplication');
-        throwIfNullOrUndefined(patchApplicationIdpModel, 'patchApplicationIdpModel', 'updateOrganizationApplication');
-
-        const headers: HttpHeaders = {
-            'Content-Type': 'application/json',
-            ...(this.configuration.username != null && this.configuration.password != null ? { Authorization: `Basic ${btoa(this.configuration.username + ':' + this.configuration.password)}` } : undefined),
-            // oauth required
-            ...(this.configuration.accessToken != null
-                ? { Authorization: typeof this.configuration.accessToken === 'function'
-                    ? this.configuration.accessToken('oauth2', [])
-                    : this.configuration.accessToken }
-                : undefined
-            ),
-        };
-
-        return this.request<ApplicationIdpModel>({
-            url: '/api/organization_applications/{client_id}'.replace('{client_id}', encodeURI(clientId)),
-            method: 'PATCH',
-            headers,
-            body: patchApplicationIdpModel,
-        }, opts?.responseOpts);
-    };
-
+export enum PatchAuthorizationIdpModelAllowedScopesEnum {
+    Organizationsread = 'organizations:read',
+    Organizationswrite = 'organizations:write',
+    OrganizationApplicationsread = 'organization_applications:read',
+    OrganizationApplicationswrite = 'organization_applications:write',
+    OrganizationApplicationsexecute = 'organization_applications:execute',
+    Banksread = 'banks:read',
+    Bankswrite = 'banks:write',
+    Banksexecute = 'banks:execute',
+    BankApplicationsread = 'bank_applications:read',
+    BankApplicationswrite = 'bank_applications:write',
+    BankApplicationsexecute = 'bank_applications:execute',
+    Usersread = 'users:read',
+    Userswrite = 'users:write',
+    Usersexecute = 'users:execute',
+    Accountsread = 'accounts:read',
+    Accountswrite = 'accounts:write',
+    Accountsexecute = 'accounts:execute',
+    Counterpartiesread = 'counterparties:read',
+    Counterpartiespiiread = 'counterparties:pii:read',
+    Counterpartieswrite = 'counterparties:write',
+    Counterpartiesexecute = 'counterparties:execute',
+    Customersread = 'customers:read',
+    Customerspiiread = 'customers:pii:read',
+    Customerswrite = 'customers:write',
+    Customersexecute = 'customers:execute',
+    Pricesread = 'prices:read',
+    Quotesexecute = 'quotes:execute',
+    Quotesread = 'quotes:read',
+    Tradesexecute = 'trades:execute',
+    Tradesread = 'trades:read',
+    Transactionsread = 'transactions:read',
+    Transfersexecute = 'transfers:execute',
+    Transfersread = 'transfers:read',
+    Transferswrite = 'transfers:write',
+    ExternalBankAccountsread = 'external_bank_accounts:read',
+    ExternalBankAccountspiiread = 'external_bank_accounts:pii:read',
+    Transferspiiread = 'transfers:pii:read',
+    ExternalBankAccountswrite = 'external_bank_accounts:write',
+    ExternalBankAccountsexecute = 'external_bank_accounts:execute',
+    ExternalWalletsread = 'external_wallets:read',
+    ExternalWalletswrite = 'external_wallets:write',
+    ExternalWalletsexecute = 'external_wallets:execute',
+    Workflowsread = 'workflows:read',
+    Workflowsexecute = 'workflows:execute',
+    DepositAddressesread = 'deposit_addresses:read',
+    DepositAddresseswrite = 'deposit_addresses:write',
+    DepositAddressesexecute = 'deposit_addresses:execute',
+    DepositBankAccountsread = 'deposit_bank_accounts:read',
+    DepositBankAccountswrite = 'deposit_bank_accounts:write',
+    DepositBankAccountsexecute = 'deposit_bank_accounts:execute',
+    Invoicesread = 'invoices:read',
+    Invoiceswrite = 'invoices:write',
+    Invoicesexecute = 'invoices:execute',
+    Subscriptionsread = 'subscriptions:read',
+    Subscriptionswrite = 'subscriptions:write',
+    Subscriptionsexecute = 'subscriptions:execute',
+    SubscriptionEventsread = 'subscription_events:read',
+    SubscriptionEventsexecute = 'subscription_events:execute',
+    IdentityVerificationsread = 'identity_verifications:read',
+    IdentityVerificationspiiread = 'identity_verifications:pii:read',
+    IdentityVerificationswrite = 'identity_verifications:write',
+    IdentityVerificationsexecute = 'identity_verifications:execute',
+    PersonaSessionsexecute = 'persona_sessions:execute',
+    SardineSessionsexecute = 'sardine_sessions:execute',
+    Plansexecute = 'plans:execute',
+    Plansread = 'plans:read',
+    Executionsexecute = 'executions:execute',
+    Executionsread = 'executions:read',
+    Filesread = 'files:read',
+    Filespiiread = 'files:pii:read',
+    Filesexecute = 'files:execute',
+    Openid = 'openid',
+    Profile = 'profile',
+    Email = 'email'
 }
+
