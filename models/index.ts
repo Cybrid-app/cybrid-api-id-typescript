@@ -14,6 +14,8 @@ export * from './PatchUserIdpModel';
 export * from './PostBankApplicationIdpModel';
 export * from './PostCustomerTokenIdpModel';
 export * from './PostOrganizationApplicationIdpModel';
+export * from './PostThrottleTierIdpModel';
 export * from './PostUserIdpModel';
+export * from './ThrottleTierIdpModel';
 export * from './UserIdpModel';
 export * from './UserListIdpModel';
